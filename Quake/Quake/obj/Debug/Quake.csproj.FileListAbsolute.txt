@@ -1,0 +1,10 @@
+F:\Workspaces\Quake\Quake\bin\Debug\Quake.exe.config
+F:\Workspaces\Quake\Quake\bin\Debug\Quake.exe
+F:\Workspaces\Quake\Quake\bin\Debug\Quake.pdb
+F:\Workspaces\Quake\Quake\obj\Debug\Quake.csprojResolveAssemblyReference.cache
+F:\Workspaces\Quake\Quake\obj\Debug\Quake.csproj.CoreCompileInputs.cache
+F:\Workspaces\Quake\Quake\obj\Debug\Quake.exe
+F:\Workspaces\Quake\Quake\obj\Debug\Quake.pdb
+F:\Workspaces\Quake\Quake\bin\Debug\Newtonsoft.Json.dll
+F:\Workspaces\Quake\Quake\bin\Debug\Newtonsoft.Json.xml
+F:\Workspaces\Quake\Quake\obj\Debug\Quake.csproj.CopyComplete
