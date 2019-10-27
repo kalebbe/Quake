@@ -4,7 +4,7 @@
  * 
  * @authors Kaleb Eberhart, Mick Torres
  * @version 1.0
- * @since   2019-09-28
+ * @since   2019-10-27
  */
 
 using System;
@@ -32,9 +32,16 @@ namespace Quake
 
         //Getters and setters for all of the variables in the Earthquake class
         public double Magnitude { get => magnitude; set => magnitude = value; }
-        public DateTime Date { get => dateTime; set => dateTime = value; }
+        public DateTime DateTime { get => dateTime; set => dateTime = value; }
         public double Depth { get => depth; set => depth = value; }
         public String Location { get => location; set => location = value; }
         public String Coordinates { get => coordinates; set => coordinates = value; }
+
+        //Custom ToStrint made for testing purposes and to show the user successful XML Parsing
+        public override string ToString()
+        {
+            return String.Format("Magnitude: {0}\nDateTime: {1}\nDepth: {2}\nLocation: {3}\nCoordinates: {4}\n\n\n", 
+                magnitude, dateTime, depth, location, coordinates) ;
+        }
     }
 }
