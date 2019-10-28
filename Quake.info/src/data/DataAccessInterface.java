@@ -1,10 +1,11 @@
 /**
  * This is a base interface for all of the DAO classes to follow with basic methods.
+ * Updated to remove some method that were uneccesary for this project.
  * 
  * 
  * @authors  Kaleb Eberhart, Mick Torres
  * @version 1.0
- * @since   2019-09-28
+ * @since   2019-10-27
  */
 
 package data;
@@ -31,18 +32,4 @@ public interface DataAccessInterface <T> {
 	 * @return boolean Returns true or false dependent on database success.
 	 */
 	public boolean create(T t);
-	
-	/**
-	 * This method updates a certain object in the database.
-	 * @param t This is the object being updated.
-	 * @return boolean Returns true or false dependent on database success.
-	 */
-	public boolean update(T t);
-	
-	/**
-	 * This method deletes a certain object in the database.
-	 * @param id This is the id of the object being deleted.
-	 * @return boolean Returns true or false dependent on database success.
-	 */
-	public boolean delete(int id);
 }

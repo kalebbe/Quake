@@ -10,7 +10,7 @@
 
 package beans;
 
-import java.util.Date;
+import java.sql.Timestamp;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
@@ -18,7 +18,7 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class Earthquake {
 	private double magnitude;
-	private Date dateTime;
+	private Timestamp datetime;
 	private double depth;
 	private String location;
 	private String coordinates;
@@ -31,10 +31,10 @@ public class Earthquake {
 	 * @param location where the earthquake occurred
 	 * @param coordinates Lat/Long of the earthquake
 	 */
-	public Earthquake(double magnitude, Date dateTime, double depth,
+	public Earthquake(double magnitude, Timestamp datetime, double depth,
 			String location, String coordinates) {
 		this.magnitude = magnitude;
-		this.dateTime = dateTime;
+		this.datetime = datetime;
 		this.depth = depth;
 		this.location = location;
 		this.coordinates = coordinates;
@@ -60,16 +60,16 @@ public class Earthquake {
 	 * Gets the date of the earthquake
 	 * @return Date
 	 */
-	public Date getDate() {
-		return dateTime;
+	public Timestamp getDatetime() {
+		return datetime;
 	}
 
 	/**
 	 * Setter for the date of the earthquake
 	 * @param dateTime
 	 */
-	public void setDate(Date dateTime) {
-		this.dateTime = dateTime;
+	public void setDatetime(Timestamp datetime) {
+		this.datetime = datetime;
 	}
 
 	/**

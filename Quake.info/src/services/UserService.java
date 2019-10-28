@@ -11,10 +11,17 @@
 
 package services;
 
+import javax.ejb.Local;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+
 import beans.User;
 import data.UserDAO;
 
-public class UserService {
+@Stateless
+@Local(UserInterface.class)
+@LocalBean
+public class UserService implements UserInterface {
 	private UserDAO ud = new UserDAO();
 
 	/**
@@ -23,6 +30,7 @@ public class UserService {
 	 * @param user
 	 * @return boolean
 	 */
+	@Override
 	public boolean register(User user) {
 		if(!user.getPassword().equals(user.getRePass())) {
 			return false;
@@ -35,6 +43,7 @@ public class UserService {
 	 * @param user
 	 * @return
 	 */
+	@Override
 	public boolean login(User user) {
 		return ud.login(user);
 	}

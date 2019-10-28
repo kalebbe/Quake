@@ -10,13 +10,23 @@ package data;
 
 import java.util.List;
 import java.util.Properties;
+
+import javax.ejb.Local;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+
 import beans.User;
+import util.DatabaseException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Stateless
+@Local(DataAccessInterface.class)
+@LocalBean
 public class UserDAO implements DataAccessInterface<User> {
 	//Url of the database
 	private String url = "jdbc:mysql://localhost:3306/quake";
@@ -34,10 +44,10 @@ public class UserDAO implements DataAccessInterface<User> {
 			
 			Connection conn = DriverManager.getConnection(url, connProps);
 			return conn;
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			//Failled connection with a null return
 			e.printStackTrace();
-			return null;
+			throw new DatabaseException(e);
 		}
 	}
 	
@@ -81,36 +91,15 @@ public class UserDAO implements DataAccessInterface<User> {
 			ps.setString(4, t.getPassword());
 			
 			ps.executeUpdate();
+			
+			ps.close();
 			conn.close();
 			
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			throw new DatabaseException(e);
 		}
-	}
-
-	/**
-	 * This method will be used to update users in the database. May not be used in this
-	 * project
-	 * @param t
-	 * @return boolean
-	 */
-	@Override
-	public boolean update(User t) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/**
-	 * This method would be used to delete a specific user from the database
-	 * @param id
-	 * @return boolean
-	 */
-	@Override
-	public boolean delete(int id) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 	
 	/**
@@ -129,11 +118,14 @@ public class UserDAO implements DataAccessInterface<User> {
 			
 			ResultSet resultSet = ps.executeQuery();
 			while(resultSet.next()) {
-				int count = resultSet.getInt(1);
+				int count = resultSet.getInt(1); //Gets the number of returns
 				
+				//Closing everything
 				conn.close();
+				resultSet.close();
+				ps.close();
 				
-				if(count > 0) {
+				if(count > 0) { //There is an email and password matching the query
 					return true;
 				}
 				else {
@@ -141,13 +133,13 @@ public class UserDAO implements DataAccessInterface<User> {
 				}
 			}
 			
-			conn.close();
+			conn.close(); resultSet.close(); ps.close();
 			return false;
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
-			return false;
-		}
+			throw new DatabaseException(e); //Database failure
+		} 
 	}
 
 }

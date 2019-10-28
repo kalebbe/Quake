@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QuakeInfo-Design</title>
+    <title>Quake.Info</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/fonts/material-icons.min.css" />
     <link rel="stylesheet" href="assets/css/Footer-Clean.css" />
@@ -22,7 +22,7 @@
                 <div class="collapse navbar-collapse"
                     id="navcol-1">
                     <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">About</a></li>
+                        <li class="nav-item" role="presentation"><h:link styleClass="nav-link" value="Chart" outcome="#{quakeController.viewChart()}" /></li>
                         <li class="nav-item" role="presentation"><a class="nav-link" href="./">Log Out</a></li>
                     </ul>
                 </div>
@@ -31,35 +31,32 @@
     </div>
     <div id="bodypanel">
         <div class="jumbotron" style="background-color:#f1f7fc;">
-            <h1 style="padding:10px;">Quake.info</h1><button class="btn btn-primary" type="button" style="background-color:#6693bc;">Refresh</button>
+            <h1 style="padding:10px;">Quake.info</h1>
+            <h:button value="Refresh" styleClass="btn btn-primary" 
+            	outcome="#{quakeController.goHome()}"/>
             <div class="table-responsive" style="padding:20px;">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Magnitude</th>
-                            <th>Location</th>
-                            <th>Coordinates</th>
-                            <th>Time</th>
-                            <th>Depth&nbsp;</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>2.8</td>
-                            <td>15 km NE of San Diego, CA</td>
-                            <td>32.178.N 117.035.W</td>
-                            <td>2019-09-25 14:22:16</td>
-                            <td>3.6 km</td>
-                        </tr>
-                        <tr>
-                            <td>0.2</td>
-                            <td>4 km E of Anchorage, AK</td>
-                            <td>32.178.N 117.035.W<br /></td>
-                            <td>2019-09-25 10:22:13<br /></td>
-                            <td>22.2 km</td>
-                        </tr>
-                    </tbody>
-                </table>
+            	<h:dataTable value="#{quakes}" var="quake" styleClass="table">
+            		<h:column>
+            			<f:facet name="header">Magnitude</f:facet>
+            			#{quake.magnitude}
+            		</h:column>
+            		<h:column>
+            			<f:facet name="header">Location</f:facet>
+            			#{quake.location}
+            		</h:column>
+            		<h:column>
+            			<f:facet name="header">Coordinates</f:facet>
+            			#{quake.coordinates}
+            		</h:column>
+            		<h:column>
+            			<f:facet name="header">Time</f:facet>
+            			#{quake.datetime}
+            		</h:column>
+            		<h:column>
+            			<f:facet name="header">Depth</f:facet>
+            			#{quake.depth}
+            		</h:column>
+            	</h:dataTable>
             </div>
         </div>
     </div>
