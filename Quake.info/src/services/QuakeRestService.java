@@ -16,7 +16,10 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.interceptor.Interceptors;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -29,14 +32,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import beans.Earthquake;
 import beans.ResponseDataModel;
+import util.LoggingInterceptor;
 
 
 @RequestScoped
 @Path("/quakes")
 @Produces({ "application/json" })
 @Consumes({ "application/json" })
+@Interceptors(LoggingInterceptor.class)
 public class QuakeRestService {
-	QuakeService service;
+	
+	@EJB
+	private QuakeInterface service;
 	
 	/**
 	 * This method parses retrieved JSON into java objects and calls the quake business
@@ -48,15 +55,14 @@ public class QuakeRestService {
 	@POST
 	@Path("/postdata/{key}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void addQuakes(@PathParam("key") String key, String msg) throws ParseException {
+	public ResponseDataModel addQuakes(@PathParam("key") String key, String msg) throws ParseException {
 		//Ghetto authentification. May be updated to tokken authentification in future milestone
-		//dependant upon time restraints.
+		//dependent upon time restraints.
 		if(!key.equals("QuakeKey530")) { 
-			return;
+			return new ResponseDataModel(-2, "Authentification Failure", null);
 		}
 		else {
 			try {
-				service = new QuakeService();
 				JSONArray jArray = new JSONArray(msg); //Creates an array of JSON objects from the data pushed
 				
 				for(int i = 0; i < jArray.length(); i++) {
@@ -71,9 +77,11 @@ public class QuakeRestService {
 							jObj.getString("coordinates")));
 				}
 				
+				return new ResponseDataModel(0, "Successfully Posted to Server", null);
+				
 			} catch(JSONException e) { //Catching JSON exceptions
 				e.printStackTrace();
-				throw new JSONException(e);
+				return new ResponseDataModel(-1, "System Exception", null);
 			}
 		}
 	}
@@ -88,7 +96,6 @@ public class QuakeRestService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ResponseDataModel getQuakes() {
 		ResponseDataModel response;
-		service = new QuakeService();
 		List<Earthquake> quakes = new ArrayList<Earthquake>();
 		try {
 			quakes = service.getQuakes();

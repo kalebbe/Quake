@@ -14,9 +14,11 @@ import java.util.Properties;
 import javax.ejb.Local;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 
 import beans.User;
 import util.DatabaseException;
+import util.LoggingInterceptor;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,9 +29,11 @@ import java.sql.SQLException;
 @Stateless
 @Local(DataAccessInterface.class)
 @LocalBean
+@Interceptors(LoggingInterceptor.class)
 public class UserDAO implements DataAccessInterface<User> {
 	//Url of the database
 	private String url = "jdbc:mysql://localhost:3306/quake";
+	private Connection conn = null;
 	
 	/**
 	 * This method generates a database connection for the other methods.
@@ -79,8 +83,9 @@ public class UserDAO implements DataAccessInterface<User> {
 	 */
 	@Override
 	public boolean create(User t) {
+		boolean result = false;
 		try {
-			Connection conn = this.getConnection();
+			conn = this.getConnection();
 			String sql = "INSERT INTO users (FIRST_NAME, LAST_NAME, EMAIL, PASSWORD) VALUES (?, ?, ?, ?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
 		
@@ -95,11 +100,21 @@ public class UserDAO implements DataAccessInterface<User> {
 			ps.close();
 			conn.close();
 			
-			return true;
+			result = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DatabaseException(e);
+		} finally { //Closes connection if it is not null
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					throw new DatabaseException(e);
+				}
+			}
 		}
+		return result;
 	}
 	
 	/**
@@ -108,8 +123,10 @@ public class UserDAO implements DataAccessInterface<User> {
 	 * @return
 	 */
 	public boolean login(User t) {
+		boolean result = false;
+		
 		try {
-			Connection conn = this.getConnection();
+			conn = this.getConnection();
 			String sql = "SELECT COUNT(*) FROM users WHERE EMAIL=? AND PASSWORD=?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			
@@ -126,20 +143,26 @@ public class UserDAO implements DataAccessInterface<User> {
 				ps.close();
 				
 				if(count > 0) { //There is an email and password matching the query
-					return true;
-				}
-				else {
-					return false;
+					result = true;
 				}
 			}
 			
-			conn.close(); resultSet.close(); ps.close();
-			return false;
+			resultSet.close(); ps.close(); conn.close();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
 			throw new DatabaseException(e); //Database failure
-		} 
+		} finally { //Close connection if not null
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					throw new DatabaseException(e);
+				}
+			}
+		}
+		return result;
 	}
 
 }

@@ -10,20 +10,32 @@
 
 package controllers;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
+import javax.ejb.EJB;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+import javax.interceptor.Interceptors;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import beans.Earthquake;
 import data.QuakeDAO;
+import util.LoggingInterceptor;
 
-@ManagedBean
-public class ChartView {
+@Named
+@ViewScoped
+@Interceptors(LoggingInterceptor.class)
+public class ChartView implements Serializable{
+	
+	private static final long serialVersionUID = -1746002099203519688L;
+
 	private LineChartModel lineModel;
-	QuakeDAO dao;
+	
+	@EJB
+	private QuakeDAO dao; //Did not use interface bc method is not in interface
 	
 	/**
 	 * This method calls the create line method on init

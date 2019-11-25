@@ -11,10 +11,8 @@
 package beans;
 
 import java.sql.Timestamp;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-@ManagedBean
 @ViewScoped
 public class Earthquake {
 	private double magnitude;

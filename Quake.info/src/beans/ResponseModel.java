@@ -12,7 +12,9 @@
 
 package beans;
 
-public class ResponseModel {
+import javax.enterprise.inject.Produces;
+
+public class ResponseModel implements ResponseInterface{
 	private int status;
 	private String message;
 	
@@ -31,6 +33,7 @@ public class ResponseModel {
 	 * Getter for the response model's status.
 	 * @return int
 	 */
+	@Produces
 	public int getStatus() {
 		return status;
 	}
@@ -47,6 +50,7 @@ public class ResponseModel {
 	 * Getter for the response model's message.
 	 * @return String
 	 */
+	@Produces
 	public String getMessage() {
 		return message;
 	}

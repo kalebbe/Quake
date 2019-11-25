@@ -11,17 +11,24 @@
 package services;
 
 import java.util.List;
+
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import beans.Earthquake;
 import data.QuakeDAO;
+import util.LoggingInterceptor;
 
 @Stateless
 @LocalBean
 @Local(QuakeInterface.class)
+@Interceptors(LoggingInterceptor.class)
 public class QuakeService implements QuakeInterface {
-	QuakeDAO dao;
+	
+	@EJB
+	private QuakeDAO dao; //Utilizing interface caused a multiple class error
 		
 	/**
 	 * This method connects to the DAO to create a new earthquake

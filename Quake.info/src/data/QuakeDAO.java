@@ -22,16 +22,20 @@ import java.util.Properties;
 import javax.ejb.Local;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 
 import beans.Earthquake;
 import util.DatabaseException;
+import util.LoggingInterceptor;
 
 @Stateless
 @Local(DataAccessInterface.class)
 @LocalBean
+@Interceptors(LoggingInterceptor.class)
 public class QuakeDAO implements DataAccessInterface<Earthquake>{
 	
 	private String url = "jdbc:mysql://localhost:3306/quake";
+	private Connection conn = null;
 	
 	/**
 	 * This method creates a new connection and returns it or a database
@@ -71,9 +75,9 @@ public class QuakeDAO implements DataAccessInterface<Earthquake>{
 	 */
 	@Override
 	public List<Earthquake> findAll() {
+		List<Earthquake> quakes = new ArrayList<Earthquake>(); //Instantiated list of earthquakes
 		try {
-			List<Earthquake> quakes = new ArrayList<Earthquake>(); //Instantiated list of earthquakes
-			Connection conn = this.getConnection(); //Getting connection
+			conn = this.getConnection(); //Getting connection
 			String sql = "SELECT * FROM earthquakes ORDER BY DATE_TIME DESC";
 			PreparedStatement ps = conn.prepareStatement(sql); //Preparing sql statement for execution
 			ResultSet rs = ps.executeQuery();
@@ -88,11 +92,21 @@ public class QuakeDAO implements DataAccessInterface<Earthquake>{
 			rs.close();
 			ps.close();
 			
-			return quakes;
 		} catch(SQLException e) {
 			e.printStackTrace();
 			throw new DatabaseException(e);
+		} finally {
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					throw new DatabaseException(e);
+				}
+			}
 		}
+		
+		return quakes;
 	}
 	
 	/**
@@ -101,9 +115,9 @@ public class QuakeDAO implements DataAccessInterface<Earthquake>{
 	 * @return List<Earthquake>
 	 */
 	public List<Earthquake> findLast24(){
+		List<Earthquake> quakes = new ArrayList<Earthquake>(); //Instantiated list of earthquakes
 		try {
-			List<Earthquake> quakes = new ArrayList<Earthquake>(); //Instantiated list of earthquakes
-			Connection conn = this.getConnection(); //Getting connection
+			conn = this.getConnection(); //Getting connection
 			String sql = "SELECT * FROM earthquakes WHERE DATE_TIME > DATE_SUB(NOW(), INTERVAL 1 DAY)"
 					+ " ORDER BY DATE_TIME DESC";
 			PreparedStatement ps = conn.prepareStatement(sql); //Preparing sql statement for execution
@@ -119,11 +133,20 @@ public class QuakeDAO implements DataAccessInterface<Earthquake>{
 			rs.close();
 			ps.close();
 			
-			return quakes;
 		} catch(SQLException e) {
 			e.printStackTrace();
 			throw new DatabaseException(e);
+		} finally {
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					throw new DatabaseException(e);
+				}
+			}
 		}
+		return quakes;
 	}
 
 	/**
@@ -133,8 +156,10 @@ public class QuakeDAO implements DataAccessInterface<Earthquake>{
 	 */
 	@Override
 	public boolean create(Earthquake t) {
+		boolean result = false;
+		
 		try {
-			Connection conn = this.getConnection();
+			conn = this.getConnection();
 			String sql = "INSERT INTO earthquakes(MAGNITUDE, DATE_TIME, DEPTH, LOCATION, COORDINATES) VALUES(?, ?, ?, ?, ?)";
 			PreparedStatement ps = conn.prepareStatement(sql); //Preparing for insertion
 			
@@ -149,10 +174,20 @@ public class QuakeDAO implements DataAccessInterface<Earthquake>{
 			conn.close();
 			ps.close();
 			
-			return true;
+			result = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DatabaseException(e);
+		} finally {
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					throw new DatabaseException(e);
+				}
+			}
 		}
+		return result;
 	}
 }

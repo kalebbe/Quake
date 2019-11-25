@@ -11,18 +11,24 @@
 
 package services;
 
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 
 import beans.User;
 import data.UserDAO;
+import util.LoggingInterceptor;
 
 @Stateless
 @Local(UserInterface.class)
 @LocalBean
+@Interceptors(LoggingInterceptor.class)
 public class UserService implements UserInterface {
-	private UserDAO ud = new UserDAO();
+	
+	@EJB
+	private UserDAO ud; //Class used in lieu of interface bc method is not in interface
 
 	/**
 	 * This method checks if the passwords match and then calls the DAO
