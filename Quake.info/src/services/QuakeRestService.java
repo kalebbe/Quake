@@ -16,7 +16,6 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.interceptor.Interceptors;
@@ -31,7 +30,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import beans.Earthquake;
-import beans.ResponseDataModel;
+import beans.ResponseFactory;
+import beans.ResponseFactory.ResponseType;
+import beans.ResponseInterface;
 import util.LoggingInterceptor;
 
 
@@ -50,16 +51,17 @@ public class QuakeRestService {
 	 * service to put them into the database.
 	 * @param key Used to authenticate user pushing POST.
 	 * @param msg This is the actual JSON being pushed.
+	 * @return ResponseInterface
 	 * @throws ParseException
 	 */
 	@POST
 	@Path("/postdata/{key}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ResponseDataModel addQuakes(@PathParam("key") String key, String msg) throws ParseException {
+	public ResponseInterface addQuakes(@PathParam("key") String key, String msg) throws ParseException {
 		//Ghetto authentification. May be updated to tokken authentification in future milestone
 		//dependent upon time restraints.
 		if(!key.equals("QuakeKey530")) { 
-			return new ResponseDataModel(-2, "Authentification Failure", null);
+			return ResponseFactory.getResponse(ResponseType.RESPONSE_MODEL, -2, "Authentification Error", null);
 		}
 		else {
 			try {
@@ -77,11 +79,13 @@ public class QuakeRestService {
 							jObj.getString("coordinates")));
 				}
 				
-				return new ResponseDataModel(0, "Successfully Posted to Server", null);
+				return ResponseFactory.getResponse(ResponseType.RESPONSE_MODEL, 0, 
+						"Successfully Posted to Server", null);
 				
 			} catch(JSONException e) { //Catching JSON exceptions
 				e.printStackTrace();
-				return new ResponseDataModel(-1, "System Exception", null);
+				return ResponseFactory.getResponse(ResponseType.RESPONSE_MODEL, -1, 
+						"System Exception", null);
 			}
 		}
 	}
@@ -94,14 +98,16 @@ public class QuakeRestService {
 	@GET
 	@Path("/getquakes")
 	@Produces(MediaType.APPLICATION_JSON)
-	public ResponseDataModel getQuakes() {
-		ResponseDataModel response;
+	public ResponseInterface getQuakes() {
+		ResponseInterface response;
 		List<Earthquake> quakes = new ArrayList<Earthquake>();
 		try {
 			quakes = service.getQuakes();
-			response = new ResponseDataModel(0, "Success", quakes); //Successfully retrieved earthquakes.
+			response = ResponseFactory.getResponse(ResponseType.RESPONSE_DATA_MODEL,
+					0, "Success", quakes); //Successfully retrieved earthquakes.
 		} catch(Exception e) {
-			response = new ResponseDataModel(-1, "System Exeption", quakes); //Database/other system exception.
+			response = ResponseFactory.getResponse(ResponseType.RESPONSE_MODEL,
+					-1, "System Exception", null);
 		}
 		return response;
 	}

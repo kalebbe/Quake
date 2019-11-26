@@ -136,12 +136,7 @@ public class UserDAO implements DataAccessInterface<User> {
 			ResultSet resultSet = ps.executeQuery();
 			while(resultSet.next()) {
 				int count = resultSet.getInt(1); //Gets the number of returns
-				
-				//Closing everything
-				conn.close();
-				resultSet.close();
-				ps.close();
-				
+								
 				if(count > 0) { //There is an email and password matching the query
 					result = true;
 				}

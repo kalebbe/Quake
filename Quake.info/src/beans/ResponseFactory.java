@@ -10,14 +10,28 @@
 
 package beans;
 
+import java.util.List;
+
 public class ResponseFactory {
-	public static enum ResponseType {RESPONSE_MODEL};
+	//Enum used to specify whether it's a response model or response data model
+	public static enum ResponseType {RESPONSE_MODEL, RESPONSE_DATA_MODEL};
 	
-	public static ResponseInterface getResponse(ResponseType type, int status, String message) {
+	/**
+	 * Retrieves an instance of either the response model or response data model depending on what
+	 * is asked for.
+	 * @param type RESPONSE_MODEL OR RESPONSE_DATA_MODEL
+	 * @param status Status code
+	 * @param message
+	 * @param quakes
+	 * @return ResponseInterface
+	 */
+	public static ResponseInterface getResponse(ResponseType type, int status, String message, List<Earthquake> quakes) {
 		switch(type) {
 			case RESPONSE_MODEL:
 				return new ResponseModel(status, message);
-			default:
+			case RESPONSE_DATA_MODEL:
+				return new ResponseDataModel(status, message, quakes);
+			default: //Should not be reachable.
 				break;
 		}
 			return null;
