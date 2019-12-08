@@ -21,8 +21,8 @@ public class ResponseModel implements ResponseInterface{
 	/**
 	 * Non-default constructor of the response model. Creates a new ResponseModel
 	 * object with the status and message as required parameters.
-	 * @param status
-	 * @param message
+	 * @param status Status is an error code returned based on success/failure
+	 * @param message The message tells the user what went wrong
 	 */
 	public ResponseModel(int status, String message) {
 		this.status = status;
@@ -40,7 +40,7 @@ public class ResponseModel implements ResponseInterface{
 
 	/**
 	 * Setter for the response model's status.
-	 * @param status
+	 * @param status The error code returned
 	 */
 	public void setStatus(int status) {
 		this.status = status;
@@ -57,7 +57,7 @@ public class ResponseModel implements ResponseInterface{
 
 	/**
 	 * Setter for the response model's message.
-	 * @param message
+	 * @param message The message returned
 	 */
 	public void setMessage(String message) {
 		this.message = message;

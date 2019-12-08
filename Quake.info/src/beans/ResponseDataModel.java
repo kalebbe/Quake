@@ -28,9 +28,9 @@ public class ResponseDataModel extends ResponseModel {
 	
 	/**
 	 * Non-default constructor. Calls the super and attaches a list of earthquakes
-	 * @param status
-	 * @param message
-	 * @param data
+	 * @param status The status of the response
+	 * @param message The message of the response
+	 * @param data The data attached to the response
 	 */
 	public ResponseDataModel(int status, String message, List<Earthquake> data) {
 		super(status, message);
@@ -47,7 +47,7 @@ public class ResponseDataModel extends ResponseModel {
 	
 	/**
 	 * Sets the list of earthquakes
-	 * @param data
+	 * @param data This is the list of earthquakes being returned in the API
 	 */
 	public void setData(List<Earthquake> data) {
 		this.data = data;

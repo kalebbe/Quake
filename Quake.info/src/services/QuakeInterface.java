@@ -18,7 +18,7 @@ public interface QuakeInterface {
 	
 	/**
 	 * Defines business logic for creation of a new earthquake.
-	 * @param quake
+	 * @param quake This is the earthquake being added
 	 * @return boolean
 	 */
 	public boolean addQuake(Earthquake quake);

@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition>
+	<div>
+		<nav class="navbar navbar-light navbar-expand-md">
+		<div class="container-fluid">
+			<h:link styleClass="navbar-brand" value="Quake.info"
+				outcome="#{quakeController.goHome()}" />
+			<button class="navbar-toggler" data-toggle="collapse"
+				data-target="#navcol-1">
+				<span class="sr-only">Toggle navigation</span><span
+					class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navcol-1">
+				<ul class="nav navbar-nav ml-auto">
+					<li class="nav-item" role="presentation"><h:link
+							styleClass="nav-link" value="Chart"
+							outcome="#{quakeController.viewChart()}" /></li>
+					<li class="nav-item" role="presentation"><h:link
+							styleClass="nav-link" value="Log Out"
+							outcome="#{userController.logout()}" /></li>
+				</ul>
+			</div>
+		</div>
+		</nav>
+	</div>
+</ui:composition>
+
+</html>

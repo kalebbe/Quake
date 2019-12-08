@@ -16,7 +16,7 @@ public class DatabaseException extends RuntimeException{
 
 	/**
 	 * This is just the constructor for the database exception
-	 * @param e
+	 * @param e This is the exception being thrown
 	 */
 	public DatabaseException(Throwable e) {
 		super(e);

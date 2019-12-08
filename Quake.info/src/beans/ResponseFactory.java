@@ -21,17 +21,26 @@ public class ResponseFactory {
 	 * is asked for.
 	 * @param type RESPONSE_MODEL OR RESPONSE_DATA_MODEL
 	 * @param status Status code
-	 * @param message
-	 * @param quakes
+	 * @param message Error/success message
+	 * @param quakes The list of earthquakes
 	 * @return ResponseInterface
 	 */
 	public static ResponseInterface getResponse(ResponseType type, int status, String message, List<Earthquake> quakes) {
 		switch(type) {
+			/**
+			 * When enum is RESPONSE_MODEL
+			 */
 			case RESPONSE_MODEL:
 				return new ResponseModel(status, message);
+			/**
+			 * When enum is RESPONSE_DATA_MODEL
+			 */
 			case RESPONSE_DATA_MODEL:
 				return new ResponseDataModel(status, message, quakes);
-			default: //Should not be reachable.
+			/**
+			 * Ideally unreachable
+			 */
+			default:
 				break;
 		}
 			return null;

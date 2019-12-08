@@ -58,22 +58,34 @@ public class QuakeRestService {
 	@Path("/postdata/{key}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ResponseInterface addQuakes(@PathParam("key") String key, String msg) throws ParseException {
-		//Ghetto authentification. May be updated to tokken authentification in future milestone
-		//dependent upon time restraints.
+		/**
+		 * Ghetto authentification that could be updated to use token authentification in the future; however,
+		 * we are not going to have time with this semester coming to an end.
+		 */
 		if(!key.equals("QuakeKey530")) { 
 			return ResponseFactory.getResponse(ResponseType.RESPONSE_MODEL, -2, "Authentification Error", null);
 		}
 		else {
 			try {
-				JSONArray jArray = new JSONArray(msg); //Creates an array of JSON objects from the data pushed
+				/**
+				 * Creates an array of JSON objects from the data pushed
+				 */
+				JSONArray jArray = new JSONArray(msg);
 				
 				for(int i = 0; i < jArray.length(); i++) {
-					JSONObject jObj = jArray.getJSONObject(i); //Instantiating each JSON object
+					/**
+					 * Instantiating each JSON object
+					 */
+					JSONObject jObj = jArray.getJSONObject(i);
 										
-					//Parsing the date time into a java date time and removing the 't' in the datetime
+					/*
+					 * Parsing the date time into a java date time and removing the 't' in the datetime
+					 */
 					Timestamp dateTime = Timestamp.valueOf(jObj.getString("datetime").replace('t', ' '));
 					
-					//Creating a new Earthquake in the database for each JSON object
+					/*
+					 * Creating a new Earthquake in the database for each JSON object
+					 */
 					service.addQuake(new Earthquake(jObj.getDouble("magnitude"), dateTime,
 							jObj.getDouble("depth"), jObj.getString("location"),
 							jObj.getString("coordinates")));
@@ -82,7 +94,11 @@ public class QuakeRestService {
 				return ResponseFactory.getResponse(ResponseType.RESPONSE_MODEL, 0, 
 						"Successfully Posted to Server", null);
 				
-			} catch(JSONException e) { //Catching JSON exceptions
+			} 
+			/**
+			 * Catching JSON Exceptions
+			 */
+			catch(JSONException e) {
 				e.printStackTrace();
 				return ResponseFactory.getResponse(ResponseType.RESPONSE_MODEL, -1, 
 						"System Exception", null);
@@ -103,8 +119,11 @@ public class QuakeRestService {
 		List<Earthquake> quakes = new ArrayList<Earthquake>();
 		try {
 			quakes = service.getQuakes();
+			/**
+			 * Successfully retrieved earthquakes
+			 */
 			response = ResponseFactory.getResponse(ResponseType.RESPONSE_DATA_MODEL,
-					0, "Success", quakes); //Successfully retrieved earthquakes.
+					0, "Success", quakes);
 		} catch(Exception e) {
 			response = ResponseFactory.getResponse(ResponseType.RESPONSE_MODEL,
 					-1, "System Exception", null);

@@ -3,46 +3,21 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quake.Info</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="assets/fonts/material-icons.min.css" />
-    <link rel="stylesheet" href="assets/css/Footer-Clean.css" />
-    <link rel="stylesheet" href="assets/css/Login-Form-Clean.css" />
-    <link rel="stylesheet" href="assets/css/styles.css" />
-</h:head>
+<h:body>
+	<ui:composition template="/templates/Layout2.xhtml">
+		<ui:define name="content">
 
-<body>
-    <div>
-        <nav class="navbar navbar-light navbar-expand-md">
-            <div class="container-fluid"><h:link styleClass="navbar-brand" value="Quake.info" outcome="#{quakeController.goHome()}" /><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse"
-                    id="navcol-1">
-                    <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Chart</a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="./">Log Out</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
-    
-    <div id="bodypanel">
-    	<div class="jumbotron" style="background-color:#f1f7fc">
-    		<h2>Earthquakes In the Past 24 Hours</h2>
-    		<p:chart type="line" model="#{chartView.lineModel}" style="height:500px;"/>
-    	</div>
-    </div>
-    <div id="footer" style="height:85px;">
-        <footer>
-            <p class="copyright">Quake.info © 2019</p>
-        </footer>
-    </div>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-</body>
+			<div id="bodypanel">
+				<div class="jumbotron" style="background-color: #f1f7fc">
+					<h2>Earthquakes In the Past 24 Hours</h2>
+					<p:chart type="line" model="#{chartView.lineModel}"
+						style="height:500px;" />
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
 
 </html>

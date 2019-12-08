@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -40,10 +41,17 @@ public class QuakeController implements Serializable {
 	 */
 	public String goHome() {
 		try {
+			FacesContext context = FacesContext.getCurrentInstance();
+			
 			List<Earthquake> quakes = qs.getQuakes();
-			FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put("quakes", quakes);
+			context.getExternalContext().getRequestMap().put("quakes", quakes);
 			return "Home.xhtml";
-		} catch(DatabaseException e) {
+		} 
+		/**
+		 * Added EJBTransactionRolledbackException for database access attempts when
+		 * the database is shut down.
+		 */
+		catch(DatabaseException | EJBTransactionRolledbackException e) {
 			System.out.println("======================> Database connection failure!");
 			return "Error.xhtml";
 		}
@@ -56,7 +64,7 @@ public class QuakeController implements Serializable {
 	public String viewChart() {
 		try {
 			return "Chart.xhtml";
-		} catch(DatabaseException e) {
+		} catch(DatabaseException | EJBTransactionRolledbackException e) {
 			System.out.println("======================> Database connection failure!");
 			return "Error.xhtml";
 		}

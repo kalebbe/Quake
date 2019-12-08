@@ -44,7 +44,10 @@ public class QuakeDAO implements DataAccessInterface<Earthquake>{
 	 */
 	public Connection getConnection() {
 		try {
-			Properties connProps = new Properties(); //Username and password
+			/**
+			 * Username and password go into the connection properties
+			 */
+			Properties connProps = new Properties();
 			connProps.put("user", "root");
 			connProps.put("password", "");
 			
@@ -55,17 +58,6 @@ public class QuakeDAO implements DataAccessInterface<Earthquake>{
 			throw new DatabaseException(e);
 		}
 	}
-	
-	/**
-	 * Gets and earthquake by it's specified ID. Currently not in use
-	 * @param id
-	 * @return Earthquake
-	 */
-	@Override
-	public Earthquake findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/**
 	 * This method retrieves every earthquake from the database. If this were a full fledged application,
@@ -75,19 +67,34 @@ public class QuakeDAO implements DataAccessInterface<Earthquake>{
 	 */
 	@Override
 	public List<Earthquake> findAll() {
-		List<Earthquake> quakes = new ArrayList<Earthquake>(); //Instantiated list of earthquakes
+		/**
+		 * Instantiated list of earthquakes
+		 */
+		List<Earthquake> quakes = new ArrayList<Earthquake>();
 		try {
-			conn = this.getConnection(); //Getting connection
+			/**
+			 * Retrieving the connection
+			 */
+			conn = this.getConnection();
 			String sql = "SELECT * FROM earthquakes ORDER BY DATE_TIME DESC";
-			PreparedStatement ps = conn.prepareStatement(sql); //Preparing sql statement for execution
+			
+			/**
+			 * Preparing the sql statement for execution
+			 */
+			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			
-			while(rs.next()) { //Adds each quake to a list of earthquakes
+			/**
+			 * Adding each earthquake to a list of earthquakes
+			 */
+			while(rs.next()) {
 				quakes.add(new Earthquake(rs.getDouble("MAGNITUDE"), rs.getTimestamp("DATE_TIME"),
 						rs.getDouble("DEPTH"), rs.getString("LOCATION"), rs.getString("COORDINATES")));
 			}
 			
-			//Closing everything
+			/**
+			 * Closing everything
+			 */
 			conn.close();
 			rs.close();
 			ps.close();
@@ -115,7 +122,7 @@ public class QuakeDAO implements DataAccessInterface<Earthquake>{
 	 * @return List<Earthquake>
 	 */
 	public List<Earthquake> findLast24(){
-		List<Earthquake> quakes = new ArrayList<Earthquake>(); //Instantiated list of earthquakes
+		List<Earthquake> quakes = new ArrayList<Earthquake>();
 		try {
 			conn = this.getConnection(); //Getting connection
 			String sql = "SELECT * FROM earthquakes WHERE DATE_TIME > DATE_SUB(NOW(), INTERVAL 1 DAY)"
@@ -128,7 +135,9 @@ public class QuakeDAO implements DataAccessInterface<Earthquake>{
 						rs.getDouble("DEPTH"), rs.getString("LOCATION"), rs.getString("COORDINATES")));
 			}
 			
-			//Closing everything
+			/**
+			 * Closing everything
+			 */
 			conn.close();
 			rs.close();
 			ps.close();
@@ -151,7 +160,7 @@ public class QuakeDAO implements DataAccessInterface<Earthquake>{
 
 	/**
 	 * This method creates a new earthquake in the database
-	 * @param t
+	 * @param t This is the earthquake model being inserted into the database
 	 * @return boolean
 	 */
 	@Override
@@ -161,10 +170,14 @@ public class QuakeDAO implements DataAccessInterface<Earthquake>{
 		try {
 			conn = this.getConnection();
 			String sql = "INSERT INTO earthquakes(MAGNITUDE, DATE_TIME, DEPTH, LOCATION, COORDINATES) VALUES(?, ?, ?, ?, ?)";
-			PreparedStatement ps = conn.prepareStatement(sql); //Preparing for insertion
+			
+			/**
+			 * Preparing for insertion
+			 */
+			PreparedStatement ps = conn.prepareStatement(sql);
 			
 			ps.setDouble(1,  t.getMagnitude());
-			ps.setTimestamp(2, t.getDatetime()); //Model date gets parsed into SQL date
+			ps.setTimestamp(2, t.getDatetime());
 			ps.setDouble(3, t.getDepth());
 			ps.setString(4, t.getLocation());
 			ps.setString(5, t.getCoordinates());

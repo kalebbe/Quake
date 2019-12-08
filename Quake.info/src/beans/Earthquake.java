@@ -23,10 +23,10 @@ public class Earthquake {
 	
 	/**
 	 * Default constructor for the Earthquake model
-	 * @param magnitude of the earthquake
-	 * @param dateTime that the earthquake happened
-	 * @param depth of the earthquake
-	 * @param location where the earthquake occurred
+	 * @param magnitude The magnitude of the earthquake
+	 * @param dateTime The time and date that the earthquake happened
+	 * @param depth The depth of the earthquake
+	 * @param location The general location where the earthquake occurred
 	 * @param coordinates Lat/Long of the earthquake
 	 */
 	public Earthquake(double magnitude, Timestamp datetime, double depth,
@@ -48,7 +48,7 @@ public class Earthquake {
 
 	/**
 	 * Setter for magnitude
-	 * @param magnitude new value to be set
+	 * @param magnitude The new magnitude value being set
 	 */
 	public void setMagnitude(double magnitude) {
 		this.magnitude = magnitude;

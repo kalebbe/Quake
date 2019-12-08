@@ -16,14 +16,14 @@ public interface UserInterface {
 	
 	/**
 	 * Calls the DAO to register the user in the database.
-	 * @param user
+	 * @param user This is the user being registered
 	 * @return boolean
 	 */
 	public boolean register(User user);
 	
 	/**
 	 * Calls the DAO to log the user in.
-	 * @param user
+	 * @param user This is the user being logged in
 	 * @return boolean
 	 */
 	public boolean login(User user);

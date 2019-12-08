@@ -45,7 +45,9 @@ public class Logger {
 	 * @param input
 	 */
 	public void putLog(String input) {
-		//Adds the input to the logger
+		/*
+		 * Adds the input to the logger
+		 */
 		log.add(input);
 	}
 }

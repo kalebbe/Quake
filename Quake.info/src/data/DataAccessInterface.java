@@ -13,12 +13,6 @@ package data;
 import java.util.List;
 
 public interface DataAccessInterface <T> {
-	/**
-	 * This method will find any object by its ID in the database.
-	 * @param id This is used to get the Object.
-	 * @return T This is the object returned.
-	 */
-	public T findById(int id);
 	
 	/**
 	 * This method gets all of a certain object from the database.

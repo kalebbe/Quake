@@ -31,7 +31,10 @@ import java.sql.SQLException;
 @LocalBean
 @Interceptors(LoggingInterceptor.class)
 public class UserDAO implements DataAccessInterface<User> {
-	//Url of the database
+
+	/**
+	 * The url of the database
+	 */
 	private String url = "jdbc:mysql://localhost:3306/quake";
 	private Connection conn = null;
 	
@@ -41,28 +44,22 @@ public class UserDAO implements DataAccessInterface<User> {
 	 */
 	public Connection getConnection() {
 		try {
-			//Sets properties for the connection
+			/**
+			 * Sets properties for the connection
+			 */
 			Properties connProps = new Properties();
 			connProps.put("user", "root");
 			connProps.put("password", "");
 			
 			Connection conn = DriverManager.getConnection(url, connProps);
 			return conn;
-		} catch (SQLException e) {
-			//Failled connection with a null return
+		} catch (SQLException e ) {
+			/**
+			 * Failled connection with a null return
+			 */
 			e.printStackTrace();
 			throw new DatabaseException(e);
 		}
-	}
-	
-	/**
-	 * This method is used to find users by their id. Currently not in use
-	 * @param id
-	 * @return User
-	 */
-	@Override
-	public User findById(int id) {
-		return null;
 	}
 
 	/**
@@ -71,14 +68,13 @@ public class UserDAO implements DataAccessInterface<User> {
 	 */
 	@Override
 	public List<User> findAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	/**
 	 * This method registers a new user in the database. In future versions, this will
 	 * check for an existing email beforehand.
-	 * @param t
+	 * @param t This is the user object being created in the database
 	 * @return boolean
 	 */
 	@Override
@@ -86,10 +82,16 @@ public class UserDAO implements DataAccessInterface<User> {
 		boolean result = false;
 		try {
 			conn = this.getConnection();
+			
+			/**
+			 * MySQL statement used to insert the user into the database
+			 */
 			String sql = "INSERT INTO users (FIRST_NAME, LAST_NAME, EMAIL, PASSWORD) VALUES (?, ?, ?, ?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
 		
-			//Setting the parameters for the query
+			/**
+			 * Setting the parameters for the query
+			 */
 			ps.setString(1, t.getFirstName());
 			ps.setString(2, t.getLastName());
 			ps.setString(3, t.getEmail());
@@ -97,6 +99,9 @@ public class UserDAO implements DataAccessInterface<User> {
 			
 			ps.executeUpdate();
 			
+			/**
+			 * Closing the preparedstatement and conneciton
+			 */
 			ps.close();
 			conn.close();
 			
@@ -104,7 +109,11 @@ public class UserDAO implements DataAccessInterface<User> {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DatabaseException(e);
-		} finally { //Closes connection if it is not null
+		} 
+		/**
+		 * Closes connection if it is not null
+		 */
+		finally {
 			if(conn != null) {
 				try {
 					conn.close();
@@ -118,8 +127,61 @@ public class UserDAO implements DataAccessInterface<User> {
 	}
 	
 	/**
+	 * This methods checks the database to see if the user's email is already in use.
+	 * @param email This is the email being checked
+	 * @return boolean
+	 */
+	public boolean checkEmail(String email) {
+		boolean result = false;
+		try {
+			/**
+			 * Retrieving a database connection and creating the SQL statement for count
+			 */
+			conn = this.getConnection();
+			String sql = "SELECT count(*) FROM users WHERE EMAIL=?";
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, email);
+			
+			ResultSet resultSet = ps.executeQuery();
+			
+			/**
+			 * This loop goes through the results from the query then
+			 * checks if the result count is 1 or higher. This would
+			 * imply that the email already exists in the database
+			 */
+			while(resultSet.next()) {
+				int count = resultSet.getInt(1);
+				
+				if(count > 0) {
+					result = true;
+				}
+			}
+			
+			conn.close(); ps.close(); resultSet.close();
+			
+		} 
+		/**
+		 * Catching sql exceptions
+		 */
+		catch(SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException(e);
+		} finally {
+			if(conn!= null) {
+				try {
+					conn.close();
+				} catch(SQLException e) {
+					throw new DatabaseException(e);
+				}
+			}
+		}
+		return result;
+	}
+	
+	/**
 	 * This method logs the user in to the website if their email and password match
-	 * @param t
+	 * @param t This is the user being logged in
 	 * @return
 	 */
 	public boolean login(User t) {
@@ -135,9 +197,15 @@ public class UserDAO implements DataAccessInterface<User> {
 			
 			ResultSet resultSet = ps.executeQuery();
 			while(resultSet.next()) {
-				int count = resultSet.getInt(1); //Gets the number of returns
-								
-				if(count > 0) { //There is an email and password matching the query
+				/**
+				 * Gets the number of returns
+				 */
+				int count = resultSet.getInt(1);
+						
+				/**
+				 * Count will be higher than 0 if the email and password exist in the database
+				 */
+				if(count > 0) {
 					result = true;
 				}
 			}
@@ -146,8 +214,12 @@ public class UserDAO implements DataAccessInterface<User> {
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
-			throw new DatabaseException(e); //Database failure
-		} finally { //Close connection if not null
+			throw new DatabaseException(e);
+		} 
+		/**
+		 * Final check to close the connection if it is not null
+		 */
+		finally {
 			if(conn != null) {
 				try {
 					conn.close();

@@ -21,7 +21,7 @@ public interface ResponseInterface {
 	
 	/**
 	 * Sets the response status.
-	 * @param status
+	 * @param status The status of the response
 	 */
 	public void setStatus(int status);
 	
@@ -33,7 +33,7 @@ public interface ResponseInterface {
 	
 	/**
 	 * Sets the message for the response.
-	 * @param message
+	 * @param message The message attached to the response
 	 */
 	public void setMessage(String message);
 }

@@ -29,23 +29,27 @@ public class LoggingInterceptor implements Serializable {
 	/**
 	 * This method logs the entrance and exit from each method in the
 	 * application.
-	 * @param ctx
+	 * @param ctx This is the invocation context being used in this method
 	 * @return Object
 	 * @throws Exception
 	 */
 	@AroundInvoke
 	public Object methodInterceptor(InvocationContext ctx) throws Exception{
-		//Logging the entrance into the method
+		/*
+		 * Logging the entrance into the method
+		 */
 		String input = "Entering method: " + ctx.getTarget().getClass() + "." +
 				ctx.getMethod().getName() + "()";
 		
-		log.putLog(input); //Logs the entrance into the method.
+		log.putLog(input);
 		
-		//Logging when the user leaves the method
+		/*
+		 * Logging when the user leaves the method
+		 */
 		input = "Leave method: " + ctx.getTarget().getClass() + "." + 
 				ctx.getMethod().getName() + "()";
 		
-		log.putLog(input); //Logs the exit from the method.
+		log.putLog(input);
 		
 		return ctx.proceed();
 	}

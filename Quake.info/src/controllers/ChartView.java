@@ -34,8 +34,11 @@ public class ChartView implements Serializable{
 
 	private LineChartModel lineModel;
 	
+	/**
+	 * The dao was injected directly bc the method required were not within the interface.
+	 */
 	@EJB
-	private QuakeDAO dao; //Did not use interface bc method is not in interface
+	private QuakeDAO dao;
 	
 	/**
 	 * This method calls the create line method on init
@@ -63,9 +66,20 @@ public class ChartView implements Serializable{
         Axis yAxis = lineModel.getAxis(AxisType.Y);
         Axis xAxis = lineModel.getAxis(AxisType.X);
         
-        yAxis.setLabel("Depth"); //Set Y axis to depth, will be changed to time later
-        xAxis.setMin(0); //Min magnitude
-        xAxis.setMax(10); //Max magnitude
+        /**
+         * Sets the Y Axis to depth, will be updated later with graph overhaul
+         */
+        yAxis.setLabel("Depth");
+        
+        /**
+         * Sets the minimum magnitude on the graph
+         */
+        xAxis.setMin(0);
+        
+        /**
+         * Sets the maximum magnitude on the graph
+         */
+        xAxis.setMax(10);
         xAxis.setLabel("Magnitude");
     }
 	
@@ -79,16 +93,23 @@ public class ChartView implements Serializable{
 		
         LineChartModel model = new LineChartModel();
         
-        //Multiple series could be added here to show different days
+        /**
+         * Multiple series could be added here if we chose to show different days
+         */
         LineChartSeries series = new LineChartSeries();
         series.setLabel("Earthquakes"); 
  
-        //Setting the data for the series to earthquakes in past 24 hours
+        /**
+         * Setting the data for the series to earthquakes in past 24 hours
+         */
         for(Earthquake quake : quakes) {      	
         	series.set(quake.getMagnitude(), quake.getDepth());
         }
         
-        model.addSeries(series); //Attach series to the model
+        /**
+         * Attach series to the model
+         */
+        model.addSeries(series);
  
         return model;
     }

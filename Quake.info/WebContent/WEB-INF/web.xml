@@ -44,4 +44,11 @@
     	<servlet-name>Resteasy Servlet</servlet-name>
     	<servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
   	</servlet>
+  	<error-page>
+  		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
+  		<location>/Login.xhtml</location>
+  	</error-page>
+  	<session-config>
+  		<session-timeout>30</session-timeout>
+  	</session-config>
 </web-app>

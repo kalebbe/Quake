@@ -3,70 +3,48 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html">
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quake.Info</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="assets/fonts/material-icons.min.css" />
-    <link rel="stylesheet" href="assets/css/Footer-Clean.css" />
-    <link rel="stylesheet" href="assets/css/Login-Form-Clean.css" />
-    <link rel="stylesheet" href="assets/css/styles.css" />
-</head>
-
-<body>
-    <div>
-        <nav class="navbar navbar-light navbar-expand-md">
-            <div class="container-fluid"><a class="navbar-brand" href="#">Quake.info</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse"
-                    id="navcol-1">
-                    <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item" role="presentation"><h:link styleClass="nav-link" value="Chart" outcome="#{quakeController.viewChart()}" /></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="./">Log Out</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
-    <div id="bodypanel">
-        <div class="jumbotron" style="background-color:#f1f7fc;">
-            <h1 style="padding:10px;">Quake.info</h1>
-            <h:button value="Refresh" styleClass="btn btn-primary" 
-            	outcome="#{quakeController.goHome()}"/>
-            <div class="table-responsive" style="padding:20px;">
-            	<h:dataTable value="#{quakes}" var="quake" styleClass="table">
-            		<h:column>
-            			<f:facet name="header">Magnitude</f:facet>
-            			#{quake.magnitude}
-            		</h:column>
-            		<h:column>
-            			<f:facet name="header">Location</f:facet>
-            			#{quake.location}
-            		</h:column>
-            		<h:column>
-            			<f:facet name="header">Coordinates</f:facet>
-            			#{quake.coordinates}
-            		</h:column>
-            		<h:column>
-            			<f:facet name="header">Time</f:facet>
-            			#{quake.datetime}
-            		</h:column>
-            		<h:column>
-            			<f:facet name="header">Depth</f:facet>
-            			#{quake.depth}
-            		</h:column>
-            	</h:dataTable>
-            </div>
-        </div>
-    </div>
-    <div id="footer" style="height:85px;">
-        <footer>
-            <p class="copyright">Quake.info © 2019</p>
-        </footer>
-    </div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-</body>
-
+<h:body>
+	<ui:composition template="/templates/Layout2.xhtml">
+		<ui:define name="content">
+			<div id="bodypanel">
+				<div class="jumbotron" style="background-color: #f1f7fc;">
+					<h1 style="padding: 10px;">Quake.info</h1>
+					<h:button value="Refresh" styleClass="btn btn-primary"
+						outcome="#{quakeController.goHome()}" />
+					<div class="table-responsive" style="padding: 20px;">
+						<h:dataTable value="#{quakes}" var="quake" styleClass="table table-bordered table-striped table-hover" id="table">
+							<h:column>
+								<f:facet name="header">Magnitude</f:facet>
+								<h:outputText value="#{quake.magnitude}" />
+            				</h:column>
+							<h:column>
+								<f:facet name="header">Location</f:facet>
+								<h:outputText value="#{quake.location}" />
+            				</h:column>
+							<h:column>
+								<f:facet name="header">Coordinates</f:facet>
+								<h:outputText value="#{quake.coordinates}" />
+            				</h:column>
+							<h:column>
+								<f:facet name="header">Time</f:facet>
+								<h:outputText value="#{quake.datetime}" />
+            				</h:column>
+							<h:column>
+								<f:facet name="header">Depth</f:facet>
+								<h:outputText value="#{quake.depth}" />
+            				</h:column>
+						</h:dataTable>
+					</div>
+				</div>
+			</div>
+			<script>
+			$(document).ready(function(){
+				$('#table').DataTable();
+				$('.dataTables_length').addClass('bs-select');
+			});
+			</script>
+		</ui:define>
+	</ui:composition>	
+	
+</h:body>
 </html>

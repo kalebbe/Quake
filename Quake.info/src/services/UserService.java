@@ -27,13 +27,16 @@ import util.LoggingInterceptor;
 @Interceptors(LoggingInterceptor.class)
 public class UserService implements UserInterface {
 	
+	/**
+	 * Class used in lieu of interface bc method is not in interface
+	 */
 	@EJB
-	private UserDAO ud; //Class used in lieu of interface bc method is not in interface
+	private UserDAO ud;
 
 	/**
 	 * This method checks if the passwords match and then calls the DAO
 	 * to register the user.
-	 * @param user
+	 * @param user This is the user being registered
 	 * @return boolean
 	 */
 	@Override
@@ -41,13 +44,20 @@ public class UserService implements UserInterface {
 		if(!user.getPassword().equals(user.getRePass())) {
 			return false;
 		}
+		/**
+		 * This checks to ensure the email is not taken before
+		 * registering the user in the database
+		 */
+		if(ud.checkEmail(user.getEmail())) {
+			return false;
+		}
 		return ud.create(user);
 	}
 	
 	/**
 	 * This method calls the DAO to log the user into the application
-	 * @param user
-	 * @return
+	 * @param user This is the user attempting to log in
+	 * @return boolean
 	 */
 	@Override
 	public boolean login(User user) {

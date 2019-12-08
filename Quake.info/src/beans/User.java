@@ -44,11 +44,11 @@ public class User {
 	
 	/**
 	 * Default constructor for a user
-	 * @param firstName
-	 * @param lastName
-	 * @param email
-	 * @param password
-	 * @param rePass
+	 * @param firstName The user's first name
+	 * @param lastName The user's last name
+	 * @param email The email entered by the user
+	 * @param password The password chosen by the user
+	 * @param rePass The user's second entry of their password
 	 */
 	public User(String firstName, String lastName, String email, String password, String rePass) {
 		this.firstName = firstName;
@@ -79,7 +79,7 @@ public class User {
 
 	/**
 	 * Setter for the user's first name
-	 * @param firstName
+	 * @param firstName The user's first name
 	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
@@ -95,7 +95,7 @@ public class User {
 
 	/**
 	 * Sets the last name of the user
-	 * @param lastName
+	 * @param lastName The user's last name
 	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
@@ -111,7 +111,7 @@ public class User {
 
 	/**
 	 * This sets the email for the user
-	 * @param email
+	 * @param email The user's email address
 	 */
 	public void setEmail(String email) {
 		this.email = email;
@@ -127,7 +127,7 @@ public class User {
 
 	/**
 	 * Setter to change the user's password
-	 * @param password
+	 * @param password The user's password
 	 */
 	public void setPassword(String password) {
 		this.password = password;
@@ -143,7 +143,7 @@ public class User {
 
 	/**
 	 * Sets the confirmation password
-	 * @param rePass
+	 * @param rePass Confirmation of the user's password
 	 */
 	public void setRePass(String rePass) {
 		this.rePass = rePass;

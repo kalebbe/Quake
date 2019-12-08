@@ -5,74 +5,57 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
-<h:head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quake.info</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="assets/fonts/material-icons.min.css" />
-    <link rel="stylesheet" href="assets/css/Footer-Clean.css" />
-    <link rel="stylesheet" href="assets/css/Login-Form-Clean.css" />
-    <link rel="stylesheet" href="assets/css/styles.css" />
-</h:head>
-
-<body>
-    <div>
-        <nav class="navbar navbar-light navbar-expand-md">
-            <div class="container-fluid"><a class="navbar-brand" href="./">Quake.info</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse"
-                    id="navcol-1">
-                    <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">About</a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#">Register</a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="Login.xhtml">Log In</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </div>
-    <div class="login-clean" style="min-height:80vh;">
-        <h:form>
-            <div>
-                <div class="tab-content">
-                    <div class="tab-pane active" role="tabpanel" id="tab-2">
-                        <div class="illustration" style="margin:0px;"><i class="material-icons" style="font-size:110px;color:#779182;margin:20px;">blur_on</i></div>
-                        <div class="form-group">
-                        	<h:inputText styleClass="form-control" value="#{user.firstName}" id="firstName" a:placeholder="First Name" />
-                        	<h:message for="firstName" style="color: red;"/>
-                        </div>
-                        <div class="form-group">
-                        	<h:inputText styleClass="form-control" value="#{user.lastName}" id="lastName" a:placeholder="Last Name" />
-                        	<h:message for="lastName" style="color: red;"/>
-                        </div>
-                        <div class="form-group">
-                        	<h:inputText styleClass="form-control" value="#{user.email}" id="email" a:placeholder="Email" />
-                        	<h:message for="email" style="color: red;"/>
-                        </div>
-                        <div class="form-group">
-                        	<h:inputSecret styleClass="form-control" value="#{user.password}" id="password" a:placeholder="Password" />
-                        	<h:message for="password" style="color: red;"/>
-                        </div>
-                        <div class="form-group">
-                        	<h:inputSecret styleClass="form-control" value="#{user.rePass}" id="rePass" a:placeholder="Confirm Password" />
-                        	<h:message for="rePass" style="color: red;"/>
-                        </div>
-                        <div class="form-group">
-                        	<h:commandButton styleClass="btn btn-primary btn-block" value="Sign Up" style="background-color:#ffa15d;" 
-                        		action="#{userController.register(user)}"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </h:form>
-    </div>
-    <div id="footer" style="height:85px;">
-        <footer>
-            <p class="copyright">Quake.info © 2019</p>
-        </footer>
-    </div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-</body>
+<h:body>
+	<ui:composition template="/templates/Layout.xhtml">
+		<ui:define name="content">
+			<div class="login-clean" style="min-height: 80vh;">
+				<h:form>
+					<div>
+						<div class="tab-content">
+							<div class="tab-pane active" role="tabpanel" id="tab-2">
+								<div class="illustration" style="margin: 0px;">
+									<i class="material-icons"
+										style="font-size: 110px; color: #779182; margin: 20px;">blur_on</i>
+								</div>
+								<div class="form-group">
+									<h:inputText styleClass="form-control"
+										value="#{user.firstName}" id="firstName"
+										a:placeholder="First Name" />
+									<h:message for="firstName" style="color: red;" />
+								</div>
+								<div class="form-group">
+									<h:inputText styleClass="form-control" value="#{user.lastName}"
+										id="lastName" a:placeholder="Last Name" />
+									<h:message for="lastName" style="color: red;" />
+								</div>
+								<div class="form-group">
+									<h:inputText styleClass="form-control" value="#{user.email}"
+										id="email" a:placeholder="Email" />
+									<h:message for="email" style="color: red;" />
+								</div>
+								<div class="form-group">
+									<h:inputSecret styleClass="form-control"
+										value="#{user.password}" id="password"
+										a:placeholder="Password" />
+									<h:message for="password" style="color: red;" />
+								</div>
+								<div class="form-group">
+									<h:inputSecret styleClass="form-control" value="#{user.rePass}"
+										id="rePass" a:placeholder="Confirm Password" />
+									<h:message for="rePass" style="color: red;" />
+								</div>
+								<div class="form-group">
+									<h:commandButton styleClass="btn btn-primary btn-block"
+										value="Sign Up" style="background-color:#ffa15d;"
+										action="#{userController.register(user)}" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
 
 </html>

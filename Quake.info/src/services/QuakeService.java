@@ -27,18 +27,20 @@ import util.LoggingInterceptor;
 @Interceptors(LoggingInterceptor.class)
 public class QuakeService implements QuakeInterface {
 	
+	/**
+	 * Utilizing interface caused a multiple class error
+	 */
 	@EJB
-	private QuakeDAO dao; //Utilizing interface caused a multiple class error
+	private QuakeDAO dao;
 		
 	/**
 	 * This method connects to the DAO to create a new earthquake
 	 * in the database
-	 * @param quake
+	 * @param quake This is the earthquake being added to the database
 	 * @return boolean
 	 */
 	@Override
 	public boolean addQuake(Earthquake quake) {
-		dao = new QuakeDAO();
 		return dao.create(quake);
 	}
 	
@@ -48,7 +50,6 @@ public class QuakeService implements QuakeInterface {
 	 */
 	@Override
 	public List<Earthquake> getQuakes(){
-		dao = new QuakeDAO();
 		return dao.findAll();
 	}
 }
